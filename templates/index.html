@@ -1,26 +1,142 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIK Dashboard</title>
+</head>
+<style>
+    /* General body styles */
+    body {
+        background: white;
+        font-family: Arial, sans-serif; /* Clean font for readability */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+    }
 
-{% block title %}
-    Login
-{% endblock %}
+    /* Navigation bar styles */
+    .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000;
+            padding: 15px 20px;
+            color: white;
+        }
 
-{% block content %}
-<form>
-    <input type="text" id="userId" name="userId" placeholder="User ID">
-    <br><br>
+        .navbar h1 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
 
-    <input type="password" id="password" name="password" placeholder="Password">
-    <br><br>
+    .nav-buttons {
+        display: flex;
+        gap: 15px;
+    }
 
-    <select id="userRole" name="userRole">
-        <option value="" disabled selected>Please Select User Role</option>
-        <option value="department_representative">Department Representative</option>
-        <option value="contractor">Contractors</option>
-        <option value="admin">Admin</option>
-    </select>
-    <br><br>
+    .nav-buttons a {
+        color: white;
+        text-decoration: none;
+        font-size: 1rem;
+        padding: 5px 10px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
 
-    <button type="submit">Submit</button>
-</form>
+    .nav-buttons a:hover {
+        background-color: #4a7ae0;
+    }
 
-{% endblock %}
+    /* Center the container */
+    .container {
+        display: flex; /* Use flexbox for centering */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: calc(100vh - 60px); /* Full viewport height minus navbar height */
+    }
+
+    /* Form styles */
+    form {
+        background-color: #fff; /* White background for form */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        padding: 20px; /* Inner padding */
+        width: 300px; /* Fixed width for the form */
+    }
+
+    /* Style the input fields and select dropdown */
+    input[type="text"],
+    input[type="password"],
+    select {
+        width: 100%; /* Full width */
+        padding: 12px; /* Inner padding */
+        margin: 10px 0; /* Vertical margin */
+        border: 1px solid #ccc; /* Light gray border */
+        border-radius: 4px; /* Rounded corners */
+        box-sizing: border-box; /* Include padding in width */
+        font-size: 16px; /* Larger text */
+        transition: border-color 0.3s; /* Smooth transition */
+    }
+
+    /* Change input focus style */
+    input:focus,
+    select:focus {
+        border-color: #5b8cfa; /* Blue border on focus */
+        outline: none; /* Remove outline */
+    }
+
+    /* Style the button */
+    button[type="submit"] {
+        width: 100%; /* Full width */
+        padding: 12px; /* Inner padding */
+        background-color: #5b8cfa; /* Button color */
+        color: white; /* Text color */
+        font-size: 16px; /* Font size */
+        border: none; /* No border */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s; /* Smooth transition */
+    }
+
+    /* Button hover effect */
+    button[type="submit"]:hover {
+        background-color: #4a7ae0; /* Darker blue on hover */
+    }
+
+    /* Placeholder styles */
+    input::placeholder {
+        color: #aaa; /* Gray placeholder text */
+        font-style: italic; /* Italic style */
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 400px) {
+        form {
+            width: 90%; /* Adjust form width on small screens */
+        }
+    }
+</style>
+<body>
+    <div class="navbar">
+        <h1>QUIK</h1>
+        <div class="nav-buttons">
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+    <div class="container">
+        <form>
+            <input type="text" id="userId" name="userId" placeholder="User ID" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <select id="userRole" name="userRole" required>
+                <option value="" disabled selected>Please Select User Role</option>
+                <option value="department_representative">Department Representative</option>
+                <option value="contractor">Contractors</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
