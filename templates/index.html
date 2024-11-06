@@ -5,18 +5,26 @@
 {% endblock %}
 
 {% block content %}
-<form>
-    <input type="text" id="userId" name="userId" placeholder="User ID">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <script>
+      alert('{{ messages[0] }}');
+    </script>
+  {% endif %}
+{% endwith %}
+
+<form method="post">
+    <input type="text" id="userId" name="userId" placeholder="User ID" required>
     <br><br>
 
-    <input type="password" id="password" name="password" placeholder="Password">
+    <input type="password" id="password" name="password" placeholder="Password" required>
     <br><br>
 
-    <select id="userRole" name="userRole">
+    <select id="userRole" name="userRole" required>
         <option value="" disabled selected>Please Select User Role</option>
-        <option value="department_representative">Department Representative</option>
-        <option value="contractor">Contractors</option>
-        <option value="admin">Admin</option>
+        <option value="Department Representative">Department Representative</option>
+        <option value="Contractor">Contractor</option>
+        <option value="Admin">Admin</option>
     </select>
     <br><br>
 
