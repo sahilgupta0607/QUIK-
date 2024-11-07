@@ -22,7 +22,25 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {[self.userID, self.password, self.role]}>'
+
+class Project(db.Model):
+    ID = db.Column(db.String(50), primary_key=True)
+    Name = db.Column(db.String(100))
+    SDate = db.Column(db.Date)
+    EDate = db.Column(db.Date)
+    Budget = db.Column(db.Integer)
+    CID = db.Column(db.String(50), primary_key=True)
+    State = db.Column(db.String(100))
+    District = db.Column(db.String(100))
+    CityTown = db.Column(db.String(100))
+    Pincode = db.Column(db.String(100))
+    Status = db.Column(db.String(100))
+    Details = db.Column(db.String(1000))
+
     
+    def __repr__(self): 
+        return (f'<Project ID: {self.ID}, Name: {self.Name}, SDate: {self.SDate}, ' f'EDate: {self.EDate}, Budget: {self.Budget}, CID: {self.CID}, ' f'State: {self.State}, District: {self.District}, CityTown: {self.CityTown}, ' f'Pincode: {self.Pincode}, Status: {self.Status}, Details: {self.Details}>')
+
 
 
 # Route for the login page

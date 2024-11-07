@@ -64,6 +64,9 @@
                 <label for="projectLocation"> City/Town:</label>
                 <input type="text" id="projectCity" name="projectCity" required>
 
+                <label for="projectPincode"> Pincode:</label>
+                <input type="text" id="projectPincode" name="projectPincode" pattern="[0-9]{6}" required>
+
                 <label for="projectStatus"> Status:</label>
                 <select id="projectStatus" name="projectStatus" required>
                     <option value="Select" disabled selected>Select</option>
@@ -74,9 +77,6 @@
                     <option value="Stage 5">Stage 5</option>
                 </select>
 
-
-                <label for="projectPincode"> Pincode:</label>
-                <input type="text" id="projectPincode" name="projectPincode" pattern="[0-9]{6}" required>
 
                 <!-- Project Description -->
                 <label for="projectDetail"> Details:</label>
