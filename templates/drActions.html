@@ -21,7 +21,7 @@
         <!-- Buttons for actions -->
         <div class="button-container">
             <a href="#" id="addProjectBtn">Add Project</a>
-            <a href="#">Request For Forum</a>
+            <a href="#" id="requestForumBtn">Request For Forum</a>
             <a href="#">View Project</a>
         </div>
     </div>
@@ -94,6 +94,9 @@
             <span class="close-btn" id="closeForumModal">&times;</span>
             <h2>Forum Request Form</h2>
             <form id="forumForm">
+                <label for="departmentId">Department Representative ID:</label>
+                <input type="text" id="departmentId" name="departmentId" required>
+
                 <label for="projectId">Project ID:</label>
                 <input type="text" id="projectId" name="projectId" required>
 

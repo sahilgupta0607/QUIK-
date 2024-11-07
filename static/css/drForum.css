@@ -83,3 +83,20 @@
 #forumForm button:hover {
     background-color: #4a7ae0;
 }
+
+.success-message {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 10%;
+    right: 10%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: opacity 1s ease-out;
+}
+.success-message i {
+    margin-right: 8px;
+}
