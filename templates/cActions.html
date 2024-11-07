@@ -4,54 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cAction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drProject.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/drForum.css') }}">
     <style>
-        /* General body styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        /* Navigation bar styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #000;
-            padding: 15px 20px;
-            color: white;
-        }
-
-        .navbar h1 {
-            font-size: 1.8rem;
-            margin: 0;
-        }
-
-        /* Main content area */
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-            text-align: center;
-            gap: 4rem;
-        }
-
-        .content h2 {
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: #333;
-            border-bottom: 2px solid #5e5757; /* Corrected border syntax */
-            padding: 10px; /* Optional: Add padding for a better appearance */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            user-select: none;
-        }
-
         /* Interactive button styles */
         .button-container {
             display: flex;
@@ -113,9 +68,34 @@
         <div class="button-container">
             <a href="#">Add Project Estimation</a>
             <a href="#">Update Project Status</a>
-            <a href="#">Request For Forum</a>
+            <a href="#" id="requestForumBtn">Request For Forum</a>
+        </div>
+    </div>
+
+    <!-- Forum Modal Overlay -->
+    <div id="forumModalOverlay" class="modal-overlay">
+        <div class="forum modal-content">
+            <span class="close-btn" id="closeForumModal">&times;</span>
+            <h2>Forum Request Form</h2>
+            <form id="forumForm">
+                <label for="departmentId">Department Representative ID:</label>
+                <input type="text" id="departmentId" name="departmentId" required>
+
+                <label for="projectId">Project ID:</label>
+                <input type="text" id="projectId" name="projectId" required>
+
+                <label for="contractorId">Contractor ID:</label>
+                <input type="text" id="contractorId" name="contractorId" required>
+
+                <label for="projectAgenda">Project Agenda:</label>
+                <textarea id="projectAgenda" name="projectAgenda" rows="4" required></textarea>
+
+                <button type="submit">Submit Request</button>
+            </form>
         </div>
     </div>
 
 </body>
+<script src="{{ url_for('static', filename='css/forumModal.js') }}"></script>
+
 </html>
