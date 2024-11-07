@@ -58,7 +58,7 @@ const forumSuccessMessage = document.createElement('div');
 // Set up success message for forum form
 forumSuccessMessage.id = 'forumSuccessMessage';
 forumSuccessMessage.className = 'success-message';
-forumSuccessMessage.innerHTML = '<i>&#10004;</i> Forum Request Submitted Successfully!';
+forumSuccessMessage.innerHTML = '<center> <i>&#10004;</i> Forum Request Submitted Successfully! </center>';
 forumSuccessMessage.style.display = 'none';
 document.body.appendChild(forumSuccessMessage);
 
