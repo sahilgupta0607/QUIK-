@@ -22,6 +22,8 @@ class User(db.Model):
 
     def __repr__(self):
         return f'<User {[self.userID, self.password, self.role]}>'
+    
+
 
 # Route for the login page
 @app.route('/', methods=['GET', 'POST'])
