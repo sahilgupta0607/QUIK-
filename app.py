@@ -1,49 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from sqlalchemy import text
+from database import engine
 import os
 
-# Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Required for flashing messages
-
-# Absolute path to the current directory
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "project.db")}'  # Database configuration
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Initialize SQLAlchemy
-db = SQLAlchemy(app)
-
-# Define a User model
-class User(db.Model):
-    userID = db.Column(db.String(50), primary_key=True)
-    password = db.Column(db.String(50))
-    role = db.Column(db.String(50))
-
-    def __repr__(self):
-        return f'<User {[self.userID, self.password, self.role]}>'
-
-class Project(db.Model):
-    ID = db.Column(db.String(50), primary_key=True)
-    Name = db.Column(db.String(100))
-    SDate = db.Column(db.Date)
-    EDate = db.Column(db.Date)
-    Budget = db.Column(db.Integer)
-    CID = db.Column(db.String(50), primary_key=True)
-    State = db.Column(db.String(100))
-    District = db.Column(db.String(100))
-    CityTown = db.Column(db.String(100))
-    Pincode = db.Column(db.String(100))
-    Status = db.Column(db.String(100))
-    Details = db.Column(db.String(1000))
-
-    
-    def __repr__(self): 
-        return (f'<Project ID: {self.ID}, Name: {self.Name}, SDate: {self.SDate}, ' f'EDate: {self.EDate}, Budget: {self.Budget}, CID: {self.CID}, ' f'State: {self.State}, District: {self.District}, CityTown: {self.CityTown}, ' f'Pincode: {self.Pincode}, Status: {self.Status}, Details: {self.Details}>')
+app.secret_key = os.urandom(24)
 
 
-
-# Route for the login page
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -51,25 +14,71 @@ def login():
         password = request.form['password']
         user_role = request.form['userRole']
 
-        # Query the database to find the user
-        user = User.query.filter_by(userID=user_id, password=password, role=user_role).first()
-        
+        with engine.connect() as conn:
+            result = conn.execute(text('SELECT * FROM Users WHERE userID = :user_id'), {'user_id': user_id})
+            user = result.fetchone()  
+
         if user:
-            # Redirect to role-specific actions page based on user role
-            if user.role == 'Department Representative':
-                return redirect(url_for('department_representative_actions'))
-            elif user.role == 'Contractor':
-                return redirect(url_for('contractor_actions'))
-            elif user.role == 'Admin':
-                return redirect(url_for('admin_actions'))
-        else:
-            # Flash an error message if user is not found
-            flash('User does not exist, please check your credentials.')
-            return redirect(url_for('login'))
-    
+            db_user_id = user[0]   
+            db_password = user[1]  
+            db_user_role = user[2] 
+
+            if db_user_id == user_id and db_password == password and db_user_role == user_role:
+                if user_role == 'Department Representative':
+                    return redirect(url_for('department_representative_actions'))
+                elif user_role == 'Contractor':
+                    return redirect(url_for('contractor_actions'))
+                elif user_role == 'Admin':
+                    return redirect(url_for('admin_actions'))
+        
+        flash('User does not exist, please check your credentials.')
+        return redirect(url_for('login'))
     return render_template('index.html')
 
-# Role-specific action pages
+@app.route('/add_project', methods=['POST'])
+def add_project():
+    if 'user_id' not in session:
+        flash('You must be logged in to add a project.')
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']  # Retrieve the logged-in user's ID (Department Representative ID)
+
+    project_data = {
+        'ID': request.form['projectId'],
+        'Name': request.form['projectName'],
+        'SDate': request.form['projectDate'],
+        'EDate': request.form['completionDate'],
+        'Budget': request.form['projectAmount'],
+        'CID': request.form['contractorId'],
+        'State': request.form['projectLocation'],
+        'District': request.form['projectDistrict'],
+        'CityTown': request.form['projectCity'],
+        'Pincode': request.form['projectPincode'],
+        'Status': request.form['projectStatus'],
+        'Details': request.form['projectDetail'],
+        'DRID': user_id
+    }
+
+    try:
+        with engine.connect() as conn:
+            result = conn.execute(text('SELECT * FROM Projects WHERE ID = :ID'), {'ID': project_data['ID']})
+            existing_project = result.fetchone()
+
+            if existing_project:
+                flash('Project ID already exists. Please use a unique ID.')
+                return redirect(url_for('department_representative_actions'))
+
+            conn.execute(text('''
+                INSERT INTO Projects (ID, Name, SDate, EDate, Budget, CID, State, District, CityTown, Pincode, Status, Details, DRID)
+                VALUES (:ID, :Name, :SDate, :EDate, :Budget, :CID, :State, :District, :CityTown, :Pincode, :Status, :Details, :DRID)
+            '''), **project_data) 
+
+        flash('Project added successfully!')
+    except Exception as e:
+        flash(f'An error occurred while adding the project: {str(e)}')
+    
+    return redirect(url_for('department_representative_actions'))
+
 @app.route('/department_representative/actions')
 def department_representative_actions():
     return render_template('drActions.html')
